@@ -1,4 +1,5 @@
 /// <reference types="cypress"/>
+// import 'cypress-if'
 
 
 function generateText(length) {
@@ -11,6 +12,18 @@ function generateText(length) {
         counter += 1;
     }
     return result;
+}
+
+function createTask(title, summary, importantTaskCount) {
+    cy.contains('Add Task').click()
+    cy.get('dialog.modal').should('exist')
+    cy.get('#title').type(title)
+    cy.get('#summary').type(summary)
+    cy.get('#category').select('important').should('contain', 'Important')
+    cy.get('[type="submit"]').click('')
+    cy.wait(500)
+    cy.get('dialog.modal').should('not.exist')
+    cy.get('.task-list').its('length').should('eq', importantTaskCount + 1)
 }
 
 describe('Task operations', () => {
@@ -41,23 +54,49 @@ describe('Task operations', () => {
         //cy.get('dialog.modal').should('not.exist')
     })
 
-    it('Add a task successfully', () => {
+    it.only('Add a task successfully', async () => {
+
 
         let title = generateText(4) + ' ' + generateText(5)
         let summary = generateText(3) + ' ' + generateText(4) + ' ' + generateText(5)
-        cy.contains('Add Task').click()
-        cy.get('dialog.modal').should('exist')
-        cy.get('#title').type(title)
-        cy.get('#summary').type(summary)
-        cy.get('#category').select('important').should('contain', 'Important')
-        cy.get('[type="submit"]').click('')
-        cy.get('dialog.modal').should('not.exist')
-        cy.get('.task-list').first().then(($task) => {
-            cy.get($task).should('contain', title)
-                .and('contain', summary)
+
+        cy.get('#task-control').then( $taskControl => {
+            if ($taskControl.find('.task-list').length > 0) {
+                let importantTaskCount = cy.get('.task-list').length
+                createTask(title, summary, importantTaskCount)
+            } else {
+                let importantTaskCount = 0
+                createTask(title, summary, importantTaskCount)
+            }
         })
 
+        cy.get('#task-control').then( $taskControl => {
+            if ($taskControl.find('.task-list').length > 0) {
+                let importantTaskCount = cy.get('.task-list').length
+                createTask(title, summary, importantTaskCount)
+            } else {
+                let importantTaskCount = 0
+                createTask(title, summary, importantTaskCount)
+            }
+        })
+        
 
+
+
+
+
+
+
+        // cy.get('body')
+        //     .then($body => {
+        //         if ($body.find('.banner').length) {
+        //             return '.banner';
+        //         }
+        //         return '.popup';
+        //     })
+        //     .then(selector => {
+        //         cy.get(selector);
+        //     });
 
 
 
