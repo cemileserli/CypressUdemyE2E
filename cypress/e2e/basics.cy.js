@@ -80,26 +80,6 @@ describe('Task operations', () => {
             }
         })
         
-
-
-
-
-
-
-
-        // cy.get('body')
-        //     .then($body => {
-        //         if ($body.find('.banner').length) {
-        //             return '.banner';
-        //         }
-        //         return '.popup';
-        //     })
-        //     .then(selector => {
-        //         cy.get(selector);
-        //     });
-
-
-
     })
 })
 
