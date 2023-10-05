@@ -54,7 +54,7 @@ describe('Task operations', () => {
         //cy.get('dialog.modal').should('not.exist')
     })
 
-    it.only('Add a task successfully', async () => {
+    it('Add a task successfully', async () => {
 
 
         let title = generateText(4) + ' ' + generateText(5)
